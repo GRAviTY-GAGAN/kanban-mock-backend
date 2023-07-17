@@ -55,7 +55,7 @@ BoardRouter.post("/task", async (req, res) => {
 
 BoardRouter.delete("/task/:id/:boardID", async (req, res) => {
   const { id, boardID } = req.params;
-  //   const { boardID } = req.body;
+  //   const { boardID } = req.body.;
   console.log(boardID);
 
   try {
