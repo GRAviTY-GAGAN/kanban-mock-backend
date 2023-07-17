@@ -53,8 +53,10 @@ BoardRouter.post("/task", async (req, res) => {
   }
 });
 
-BoardRouter.delete("/task/:id", async (req, res) => {
-  const { id } = req.params;
+BoardRouter.delete("/task/:id/:boardID", async (req, res) => {
+  const { id, boardID } = req.params;
+  //   const { boardID } = req.body;
+  console.log(boardID);
 
   try {
     const findTask = await TaskModal.findOne({ _id: id });
@@ -62,9 +64,27 @@ BoardRouter.delete("/task/:id", async (req, res) => {
 
     const task = await TaskModal.findOneAndDelete({ _id: id });
 
+    const board = await BoardModal.findOne({ _id: boardID });
+
+    let tasks = board.tasks;
+
+    let newtasks = tasks.filter((task) => {
+      if (task._id == id) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    const newboard = await BoardModal.findOneAndUpdate(
+      { _id: boardID },
+      { tasks: newtasks },
+      { new: true }
+    );
+
     const boards = await BoardModal.find();
 
-    res.json({ msg: "Board Deleated", boards });
+    res.json({ msg: "Board Deleated", boards, newboard });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
