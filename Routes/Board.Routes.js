@@ -64,11 +64,7 @@ BoardRouter.delete("/task/:id", async (req, res) => {
 
     const boards = await BoardModal.find();
 
-    if (task) {
-      res.json({ msg: "Board Deleated", boards });
-    } else {
-      res.status(400).json({ msg: "Something went wrong" });
-    }
+    res.json({ msg: "Board Deleated", boards });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
